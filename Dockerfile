@@ -10,12 +10,8 @@ RUN apt-get update && \
     apt-get install -y \
       coreutils gettext-base && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
-
 COPY --from=lachlanevenson/k8s-kubectl:latest /usr/local/bin/kubectl /usr/local/bin/kubectl
 
+WORKDIR /app
 ADD run host-endpoint.yaml.tmpl /app/
-
-RUN chmod +x /usr/local/bin/kubectl
-RUN chmod +x /app/run
 CMD [ "/app/run" ]
