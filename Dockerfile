@@ -1,19 +1,20 @@
-# TODO: use more lockdown image in the future?
-FROM debian:9
+FROM debian:latest
 
-# TODO: Make sure coreutils is installed, and all packages needed for commands
-# used in the script
+ENV TINI_VERSION v0.18.0
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+RUN chmod +x /tini
+ENTRYPOINT ["/tini", "--"]
+
+# gettext-base contains envsubst
+RUN apt-get update && \
+    apt-get install -y \
+      coreutils gettext-base && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-ARG ARCH
-# FIXME: docker can't use the cache for HTTP resources it seems, so the build is
-# long. I usually use a local copy and modify the dockerfile, but a better way
-# should be used?
-ADD https://storage.googleapis.com/kubernetes-release/release/v1.16.2/bin/linux/$ARCH/kubectl /usr/local/bin
+COPY --from=lachlanevenson/k8s-kubectl:latest /usr/local/bin/kubectl /usr/local/bin/kubectl
 
-ADD run worker-host-endpoint.yaml.tmpl /app/
-ADD run vpn-host-endpoint.yaml.tmpl /app/
+ADD run host-endpoint.yaml.tmpl /app/
 
 RUN chmod +x /usr/local/bin/kubectl
 RUN chmod +x /app/run

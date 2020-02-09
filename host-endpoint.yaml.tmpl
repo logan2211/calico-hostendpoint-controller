@@ -1,0 +1,11 @@
+---
+apiVersion: crd.projectcalico.org/v1
+kind: HostEndpoint
+metadata:
+  name: "${node_name}-all"
+  labels:
+    controller-managed: "true"
+    host-endpoint: "all"
+spec:
+  interfaceName: "*"
+  node: "${node_name}"
