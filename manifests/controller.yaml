@@ -65,6 +65,9 @@ spec:
       containers:
         - image: logan2211/calico-hostendpoint-controller:latest
           name: calico-endpoint-controller
+#         env:
+#           - name: INTERFACE_NAME
+#             value: 'eth1'
       tolerations:
         - key: "node-role.kubernetes.io/master"
           operator: "Equal"
