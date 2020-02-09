@@ -63,7 +63,7 @@ spec:
     spec:
       serviceAccountName: calico-hostendpoint-controller
       containers:
-        - image: logan2211/calico-hostendpoint-controller:latest
+        - image: logan2211/calico-hostendpoint-controller:v0.3
           name: calico-endpoint-controller
 #         env:
 #           - name: INTERFACE_NAME
